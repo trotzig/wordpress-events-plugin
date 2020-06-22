@@ -17,9 +17,7 @@ function trotzig_multi_calendar_js() {
 }
 
 function trotzig_multi_calendar_plugin($atts) {
-  $url = "https://nbta.no/feed/?post_type=sbta_calendar";
-  $Content .= '<div data-trotzig-multi-calendar="'.$url.'">Loading...</div>';
-  return $Content;
+  return '<div data-trotzig-multi-calendar="'.$atts['urls'].'">Loading...</div>';
 }
 
 add_shortcode('trotzig-multi-calendar', 'trotzig_multi_calendar_plugin');
@@ -27,8 +25,8 @@ add_shortcode('trotzig-multi-calendar', 'trotzig_multi_calendar_plugin');
 /**
  * This is our callback function that embeds our phrase in a WP_REST_Response
  */
-function trotzig_get_endpoint_feed() {
-  $feed_url = 'https://nbta.no/feed/?post_type=sbta_calendar';
+function trotzig_get_endpoint_feed($request) {
+  $feed_url = $request['url']; // e.g. 'https://nbta.no/feed/?post_type=sbta_calendar';
   $content = simplexml_load_file($feed_url);
   return wp_send_json($content);
 }
