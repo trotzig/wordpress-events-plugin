@@ -29,8 +29,8 @@ add_shortcode('trotzig-multi-calendar', 'trotzig_multi_calendar_plugin');
  */
 function trotzig_get_endpoint_feed() {
   $feed_url = 'https://nbta.no/feed/?post_type=sbta_calendar';
-  $content = file_get_contents($feed_url);
-  return rest_ensure_response($content);
+  $content = simplexml_load_file($feed_url);
+  return wp_send_json($content);
 }
 
 /**
