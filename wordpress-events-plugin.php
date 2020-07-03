@@ -13,7 +13,7 @@ add_action('wp_enqueue_scripts','trotzig_multi_calendar_js');
 
 function trotzig_multi_calendar_js() {
   wp_enqueue_script('trotzig-multi-calendar',
-    plugins_url('/js/trotzig-multi-calendar.js', __FILE__ ));
+  plugins_url('/js/trotzig-multi-calendar.js', __FILE__ ));
 }
 
 function trotzig_multi_calendar_plugin($atts) {
@@ -28,7 +28,16 @@ add_shortcode('trotzig-multi-calendar', 'trotzig_multi_calendar_plugin');
 function trotzig_get_endpoint_feed($request) {
   $feed_url = $request['url']; // e.g. 'https://nbta.no/feed/?post_type=sbta_calendar';
   $content = simplexml_load_file($feed_url);
-  return wp_send_json($content);
+  $content->registerXPathNamespace('nordicbta','http://nordicbta.com/mrss/');
+  $res = $content->xpath('//channel/item');
+  foreach ($res as &$item) {
+    $event = $item->xpath('nordicbta:event')[0];
+    $item->startdate = $event['startdate'];
+    $item->enddate = $event['enddate'];
+    $item->starttime = $event['starttime'];
+    $item->endtime = $event['endtime'];
+  }
+  return wp_send_json($res);
 }
 
 /**
@@ -43,4 +52,20 @@ function trotzig_register_routes() {
 }
 
 add_action( 'rest_api_init', 'trotzig_register_routes' );
+
+// add the namespace to the RSS opening element
+function trotzig_add_rss_namespace() {
+  echo "xmlns:nordicbta=\"http://nordicbta.com/mrss/\"\n";
+}
+
+function trotzig_add_rss_properties() {
+  echo '<nordicbta:event startdate="' . get_field("event_date_start") . '" ' .
+    'enddate="' . get_field("event_date_end") . '" ' .
+    'starttime="' . get_field("event_time_start") . '" ' .
+    'endtime="' . get_field("event_time_end") . '" ' .
+    'wholeday="' . get_field("event_datetime_wholeday") . '" />';
+}
+
+add_action( 'rss2_ns', 'trotzig_add_rss_namespace' );
+add_action( 'rss2_item', 'trotzig_add_rss_properties' );
 ?>

@@ -1,9 +1,40 @@
 window.addEventListener('load', function () {
+  function getDateString(item) {
+    console.log(item);
+    var start = [];
+    var end = [];
+    if (item.startdate) {
+      start.push(item.startdate);
+    }
+    if (item.starttime) {
+      start.push(item.starttime);
+    }
+    if (item.enddate) {
+      end.push(item.enddate);
+    }
+    if (item.endtime) {
+      end.push(item.endtime);
+    }
+    var startStr = start.join(', ');
+    if (!end.length) {
+      return startStr;
+    }
+    var endStr = end.join(', ');
+    return startStr + ' - ' + endStr;
+  }
+
   function render({ node, items }) {
     node.innerHTML = '';
     for (var item of items) {
       var div = document.createElement('div');
-      div.innerHTML = '<h3>' + item.title + '</h3>';
+      div.setAttribute('class', 'tmc-calendar-item');
+      div.innerHTML =
+        '<div class="tmc-calendar-item__date">' +
+        getDateString(item) +
+        '</div>' +
+        '<h3>' +
+        item.title +
+        '</h3>';
       node.appendChild(div);
     }
   }
@@ -28,7 +59,7 @@ window.addEventListener('load', function () {
             return res.json();
           })
           .then(function (json) {
-            allItems = allItems.concat(json.channel.item);
+            allItems = allItems.concat(json);
           });
       }),
     ).then(function () {
