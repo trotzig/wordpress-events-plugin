@@ -13,7 +13,9 @@ add_action('wp_enqueue_scripts','trotzig_multi_calendar_js');
 
 function trotzig_multi_calendar_js() {
   wp_enqueue_script('trotzig-multi-calendar',
-  plugins_url('/js/trotzig-multi-calendar.js', __FILE__ ));
+    plugins_url('/js/trotzig-multi-calendar.js', __FILE__ ));
+  wp_enqueue_style('trotzig-multi-calendar',
+    plugins_url('/css/trotzig-multi-calendar.css',__FILE__ ));
 }
 
 function trotzig_multi_calendar_plugin($atts) {

@@ -28,16 +28,22 @@ window.addEventListener('load', function () {
       var div = document.createElement('div');
       div.setAttribute('class', 'tmc-calendar-item');
       div.innerHTML =
+        '<a href="' + item.url + '">' +
         '<div class="tmc-calendar-item__date">' +
         getDateString(item) +
         '</div>' +
         '<h3>' +
         item.title +
         '</h3>';
+        '</a>';
       node.appendChild(div);
     }
   }
   var nodes = document.body.querySelectorAll('[data-trotzig-multi-calendar]');
+  if (!nodes.length) {
+    return;
+  }
+
   nodes.forEach(function (el) {
     var urls = el.getAttribute('data-trotzig-multi-calendar').split(',');
     var base = document.head
