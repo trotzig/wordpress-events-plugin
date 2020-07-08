@@ -30,14 +30,20 @@ function trotzig_get_endpoint_feed($request) {
   $content = simplexml_load_file($feed_url);
   $content->registerXPathNamespace('nordicbta','http://nordicbta.com/mrss/');
   $res = $content->xpath('//channel/item');
+  $result = [];
   foreach ($res as &$item) {
     $event = $item->xpath('nordicbta:event')[0];
-    $item->startdate = $event['startdate'];
-    $item->enddate = $event['enddate'];
-    $item->starttime = $event['starttime'];
-    $item->endtime = $event['endtime'];
+    $row = array();
+    $row['title'] = (string)$item->title;
+    $row['link'] = (string)$item->link;
+    $row['description'] = (string)$item->description;
+    $row['startdate'] = (string)$event['startdate'];
+    $row['enddate'] = (string)$event['enddate'];
+    $row['starttime'] = (string)$event['starttime'];
+    $row['endtime'] = (string)$event['endtime'];
+    array_push($result, $row);
   }
-  return wp_send_json($res);
+  return wp_send_json($result);
 }
 
 /**
