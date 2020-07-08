@@ -28,14 +28,16 @@ window.addEventListener('load', function () {
       var div = document.createElement('div');
       div.setAttribute('class', 'tmc-calendar-item');
       div.innerHTML =
-        '<a href="' + item.link + '" target="_blank">' +
+        '<a href="' +
+        item.link +
+        '" target="_blank">' +
         '<div class="tmc-calendar-item__date">' +
         getDateString(item) +
         '</div>' +
         '<div class="tmc-calendar-item__label">' +
         item.title +
         '</div>';
-        '</a>';
+      ('</a>');
       node.appendChild(div);
     }
   }
@@ -68,6 +70,24 @@ window.addEventListener('load', function () {
           });
       }),
     ).then(function () {
+      // First, filter out ones that are in the past
+      allItems = allItems.filter(function (item) {
+        var start = new Date(item.startdate);
+        return start > new Date();
+      });
+
+      // Sort items, upcoming first
+      allItems.sort(function (a, b) {
+        var aStart = new Date(a.startdate);
+        var bStart = new Date(b.startdate);
+        if (aStart > bStart) {
+          return 1;
+        }
+        if (bStart > aStart) {
+          return -1;
+        }
+        return 0;
+      });
       render({ items: allItems, node: el });
     });
   });
