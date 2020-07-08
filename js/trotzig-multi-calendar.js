@@ -28,13 +28,13 @@ window.addEventListener('load', function () {
       var div = document.createElement('div');
       div.setAttribute('class', 'tmc-calendar-item');
       div.innerHTML =
-        '<a href="' + item.url + '">' +
+        '<a href="' + item.link + '" target="_blank">' +
         '<div class="tmc-calendar-item__date">' +
         getDateString(item) +
         '</div>' +
-        '<h3>' +
+        '<div class="tmc-calendar-item__label">' +
         item.title +
-        '</h3>';
+        '</div>';
         '</a>';
       node.appendChild(div);
     }

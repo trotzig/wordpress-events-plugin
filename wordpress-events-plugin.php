@@ -19,7 +19,7 @@ function trotzig_multi_calendar_js() {
 }
 
 function trotzig_multi_calendar_plugin($atts) {
-  return '<div data-trotzig-multi-calendar="'.$atts['urls'].'">Loading...</div>';
+  return '<div class="tmc-calendar" data-trotzig-multi-calendar="'.$atts['urls'].'">Loading...</div>';
 }
 
 add_shortcode('trotzig-multi-calendar', 'trotzig_multi_calendar_plugin');

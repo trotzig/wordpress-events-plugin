@@ -1,3 +1,20 @@
- .tmc-calendar-item {
-   background: red;
- }
+.tmc-calendar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 15px;
+}
+
+.tmc-calendar-item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.tmc-calendar-item__date {
+ font-weight: bold;
+ color: #0B5872;
+}
+
+.tmc-calendar-item__label {
+
+}
