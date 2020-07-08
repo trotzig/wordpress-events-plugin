@@ -1,6 +1,5 @@
 window.addEventListener('load', function () {
   function getDateString(item) {
-    console.log(item);
     var start = [];
     var end = [];
     if (item.startdate) {

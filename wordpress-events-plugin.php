@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Trotzig Multi-Calendar Events
- * Plugin URI: https://trotzigform.se
+ * Plugin URI: https://github.com/trotzig/wordpress-events-plugin
  * Description: Display multiple calendars in one view
  * Version: 0.1
  * Text Domain: trotzig-multi-calendar
