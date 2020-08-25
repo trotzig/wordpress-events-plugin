@@ -3,7 +3,7 @@
  * Plugin Name: Trotzig Multi-Calendar Events
  * Plugin URI: https://github.com/trotzig/wordpress-events-plugin
  * Description: Display multiple calendars in one view
- * Version: 0.1
+ * Version: 1.0.2
  * Text Domain: trotzig-multi-calendar
  * Author: Henric Trotzig
  * Author URI: https://happo.io
@@ -69,8 +69,8 @@ function trotzig_add_rss_namespace() {
 function trotzig_add_rss_properties() {
   if (function_exists('tribe_is_event') && tribe_is_event())
   {
-    echo '<nordicbta:event startdate="' . tribe_get_start_date() . '" ' .
-      'enddate="' . tribe_get_end_date() . '" ' .
+    echo '<nordicbta:event startdate="' . tribe_get_start_date(null, false, 'yy-m-d') . '" ' .
+      'enddate="' . tribe_get_end_date(null, false, 'yy-m-d') . '" ' .
       'starttime="' . tribe_get_start_time() . '" ' .
       'endtime="' . tribe_get_end_time() . '" ' .
       'wholeday="' . tribe_event_is_all_day() . '" />';
