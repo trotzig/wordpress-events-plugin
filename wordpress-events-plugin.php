@@ -67,11 +67,22 @@ function trotzig_add_rss_namespace() {
 }
 
 function trotzig_add_rss_properties() {
-  echo '<nordicbta:event startdate="' . get_field("event_date_start") . '" ' .
-    'enddate="' . get_field("event_date_end") . '" ' .
-    'starttime="' . get_field("event_time_start") . '" ' .
-    'endtime="' . get_field("event_time_end") . '" ' .
-    'wholeday="' . get_field("event_datetime_wholeday") . '" />';
+  if (function_exists('tribe_is_event') && tribe_is_event())
+  {
+    echo '<nordicbta:event startdate="' . tribe_get_start_date() . '" ' .
+      'enddate="' . tribe_get_end_date() . '" ' .
+      'starttime="' . tribe_get_start_time() . '" ' .
+      'endtime="' . tribe_get_end_time() . '" ' .
+      'wholeday="' . tribe_event_is_all_day() . '" />';
+  }
+  else
+  {
+    echo '<nordicbta:event startdate="' . get_field("event_date_start") . '" ' .
+      'enddate="' . get_field("event_date_end") . '" ' .
+      'starttime="' . get_field("event_time_start") . '" ' .
+      'endtime="' . get_field("event_time_end") . '" ' .
+      'wholeday="' . get_field("event_datetime_wholeday") . '" />';
+  }
 }
 
 add_action( 'rss2_ns', 'trotzig_add_rss_namespace' );
