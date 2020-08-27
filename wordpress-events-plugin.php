@@ -75,13 +75,21 @@ function trotzig_add_rss_properties() {
       'endtime="' . tribe_get_end_time() . '" ' .
       'wholeday="' . tribe_event_is_all_day() . '" />';
   }
+  else if (get_field("stom_start_dato"))
+  {
+    echo '<nordicbta:event ' .
+      'startdate="' . get_field("stom_start_dato") . '" ' .
+      'enddate="' . get_field("stom_slut_dato") . '" ' .
+      'starttime="' . get_field("stom_start_tid") . '" ' .
+      'endtime="' . get_field("stom_slut_tid") . '" />';
+  }
   else
   {
     echo '<nordicbta:event ' .
-      'startdate="' . get_field("event_date_start") || get_field("stom_start_dato") . '" ' .
-      'enddate="' . get_field("event_date_end") || get_field("stom_slut_dato") . '" ' .
-      'starttime="' . get_field("event_time_start") || get_field("stom_start_tid") . '" ' .
-      'endtime="' . get_field("event_time_end") || get_field("stom_slut_tid") . '" ' .
+      'startdate="' . get_field("event_date_start") . '" ' .
+      'enddate="' . get_field("event_date_end") . '" ' .
+      'starttime="' . get_field("event_time_start") . '" ' .
+      'endtime="' . get_field("event_time_end") . '" ' .
       'wholeday="' . get_field("event_datetime_wholeday") . '" />';
   }
 }
