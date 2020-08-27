@@ -3,7 +3,7 @@
  * Plugin Name: Trotzig Multi-Calendar Events
  * Plugin URI: https://github.com/trotzig/wordpress-events-plugin
  * Description: Display multiple calendars in one view
- * Version: 1.0.2
+ * Version: 1.0.3
  * Text Domain: trotzig-multi-calendar
  * Author: Henric Trotzig
  * Author URI: https://happo.io
