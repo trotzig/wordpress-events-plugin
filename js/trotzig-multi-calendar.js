@@ -2,7 +2,10 @@ window.addEventListener('load', function () {
   function itemKey(item) {
     var pieces = item.title.split(/[–|]/);
     var candidate = pieces[pieces.length - 1];
-    return candidate.toLowerCase().replace(/[^a-z]/, '').substring(0, 20);
+    return candidate
+      .toLowerCase()
+      .replace(/[^a-z]/, '')
+      .substring(0, 20);
   }
 
   function getDateString(item) {
@@ -30,21 +33,31 @@ window.addEventListener('load', function () {
 
   function render({ node, items }) {
     node.innerHTML = '';
-    for (var item of items) {
-      var div = document.createElement('div');
-      div.setAttribute('class', 'tmc-calendar-item');
-      div.innerHTML =
-        '<a href="' +
-        item.link +
-        '" target="_blank">' +
-        '<div class="tmc-calendar-item__date">' +
-        getDateString(item) +
-        '</div>' +
-        '<div class="tmc-calendar-item__label">' +
-        item.title +
-        '</div>';
-      ('</a>');
-      node.appendChild(div);
+    var half = Math.ceil(items.length / 2);
+    var firstHalf = items.splice(0, half);
+    var secondHalf = items.splice(-half);
+
+    for (var column of [firstHalf, secondHalf]) {
+      var columnDiv = document.createElement('div');
+      columnDiv.setAttribute('class', 'tmc-calendar-column');
+      for (var item of column) {
+        var div = document.createElement('div');
+        div.setAttribute('class', 'tmc-calendar-item');
+        div.innerHTML =
+          '<a href="' +
+          item.link +
+          '" target="_blank">' +
+          '<div class="tmc-calendar-item__date">' +
+          getDateString(item) +
+          '</div>' +
+          '<div class="tmc-calendar-item__label">' +
+          item.title +
+          '</div>';
+        ('</a>');
+        columnDiv.appendChild(div);
+      }
+
+      node.appendChild(columnDiv);
     }
   }
   var nodes = document.body.querySelectorAll('[data-trotzig-multi-calendar]');
