@@ -1,4 +1,10 @@
 window.addEventListener('load', function () {
+  function itemKey(item) {
+    var pieces = item.title.split(/[–|]/);
+    var candidate = pieces[pieces.length - 1];
+    return candidate.toLowerCase().replace(/[^a-z]/, '').substring(0, 20);
+  }
+
   function getDateString(item) {
     var start = [];
     var end = [];
@@ -88,6 +94,19 @@ window.addEventListener('load', function () {
         }
         return 0;
       });
+
+      // filter out duplicates
+      var seenKeys = [];
+      allItems = allItems.filter(function (item) {
+        var key = itemKey(item);
+        console.log(key);
+        if (seenKeys.indexOf(key) !== -1) {
+          return false;
+        }
+        seenKeys.push(key);
+        return true;
+      });
+
       render({ items: allItems, node: el });
     });
   });
