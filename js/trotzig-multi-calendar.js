@@ -8,7 +8,7 @@ window.addEventListener('load', function () {
     if (item.starttime) {
       start.push(item.starttime);
     }
-    if (item.enddate) {
+    if (item.enddate && item.enddate !== item.startdate) {
       end.push(item.enddate);
     }
     if (item.endtime) {
