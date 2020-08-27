@@ -77,10 +77,11 @@ function trotzig_add_rss_properties() {
   }
   else
   {
-    echo '<nordicbta:event startdate="' . get_field("event_date_start") . '" ' .
-      'enddate="' . get_field("event_date_end") . '" ' .
-      'starttime="' . get_field("event_time_start") . '" ' .
-      'endtime="' . get_field("event_time_end") . '" ' .
+    echo '<nordicbta:event ' .
+      'startdate="' . get_field("event_date_start") || get_field("stom_start_dato") . '" ' .
+      'enddate="' . get_field("event_date_end") || get_field("stom_slut_dato") . '" ' .
+      'starttime="' . get_field("event_time_start") || get_field("stom_start_tid") . '" ' .
+      'endtime="' . get_field("event_time_end") || get_field("stom_slut_tid") . '" ' .
       'wholeday="' . get_field("event_datetime_wholeday") . '" />';
   }
 }
