@@ -8,17 +8,31 @@ window.addEventListener('load', function () {
       .substring(0, 20);
   }
 
+  function normalizeDate(dateString) {
+    if (dateString.length === 8) {
+      return dateFns.parse(dateString, 'YYYYMMDD');
+    }
+    return dateFns.parse(dateString, 'YYYY-MM-DD');
+  }
+
+  function normalizeTime(timeString) {
+    if (timeString.length === 8) {
+      return timeString.slice(0, 5)
+    }
+    return timeString;
+  }
+
   function getDateString(item) {
     var start = [];
     var end = [];
     if (item.startdate) {
-      start.push(item.startdate);
+      start.push(dateFns.format(item.startdate, 'YYYY-MM-DD'));
     }
     if (item.starttime) {
       start.push(item.starttime);
     }
-    if (item.enddate && item.enddate !== item.startdate) {
-      end.push(item.enddate);
+    if (item.enddate && item.enddate.getTime() !== item.startdate.getTime()) {
+      end.push(dateFns.format(item.enddate, 'YYYY-MM-DD'));
     }
     if (item.endtime) {
       end.push(item.endtime);
@@ -37,8 +51,7 @@ window.addEventListener('load', function () {
     var firstHalf = items.splice(0, half);
     var secondHalf = items.splice(-half);
 
-    for (var column of [firstHalf, secondHalf]) {
-      var columnDiv = document.createElement('div');
+    for (var column of [firstHalf, secondHalf]) { var columnDiv = document.createElement('div');
       columnDiv.setAttribute('class', 'tmc-calendar-column');
       for (var item of column) {
         var div = document.createElement('div');
@@ -67,6 +80,10 @@ window.addEventListener('load', function () {
 
   nodes.forEach(function (el) {
     var urls = el.getAttribute('data-trotzig-multi-calendar').split(',');
+    var limit = parseInt(
+      el.getAttribute('data-trotzig-multi-calendar-limit') || '100',
+      10,
+    );
     var base = document.head
       .querySelector('link[rel="https://api.w.org/"]')
       .getAttribute('href');
@@ -89,10 +106,21 @@ window.addEventListener('load', function () {
           });
       }),
     ).then(function () {
-      // First, filter out ones that are in the past
+      // Normalize dates
+      allItems.forEach(function (item) {
+        item.startdate = normalizeDate(item.startdate);
+        item.enddate = item.enddate && normalizeDate(item.enddate);
+      });
+
+      // Normalize times
+      allItems.forEach(function (item) {
+        item.starttime = item.starttime && normalizeTime(item.starttime);
+        item.endtime = item.endtime && normalizeTime(item.endtime);
+      });
+
+      // Filter out ones that are in the past
       allItems = allItems.filter(function (item) {
-        var start = new Date(item.startdate);
-        return start > new Date();
+        return item.startdate > new Date();
       });
 
       // Sort items, upcoming first
@@ -112,7 +140,6 @@ window.addEventListener('load', function () {
       var seenKeys = [];
       allItems = allItems.filter(function (item) {
         var key = itemKey(item);
-        console.log(key);
         if (seenKeys.indexOf(key) !== -1) {
           return false;
         }
@@ -120,7 +147,10 @@ window.addEventListener('load', function () {
         return true;
       });
 
-      render({ items: allItems, node: el });
+      // Reduce the size if necessary
+      allItems = allItems.slice(0, limit);
+
+      render({ items: allItems, node: el, limit: limit });
     });
   });
 });
