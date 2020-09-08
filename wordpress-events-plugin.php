@@ -46,6 +46,7 @@ function trotzig_get_endpoint_feed($request) {
     $row['enddate'] = (string)$event['enddate'];
     $row['starttime'] = (string)$event['starttime'];
     $row['endtime'] = (string)$event['endtime'];
+    $row['canonicalurl'] = (string)$event['canonicalurl'];
     array_push($result, $row);
   }
   return wp_send_json($result);
@@ -89,6 +90,7 @@ function trotzig_add_rss_properties() {
   else
   {
     echo '<nordicbta:event ' .
+      'canonicalurl="' . get_field("event_canonical_url") . '" ' .
       'startdate="' . get_field("event_date_start") . '" ' .
       'enddate="' . get_field("event_date_end") . '" ' .
       'starttime="' . get_field("event_time_start") . '" ' .

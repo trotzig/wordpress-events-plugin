@@ -51,14 +51,15 @@ window.addEventListener('load', function () {
     var firstHalf = items.splice(0, half);
     var secondHalf = items.splice(-half);
 
-    for (var column of [firstHalf, secondHalf]) { var columnDiv = document.createElement('div');
+    for (var column of [firstHalf, secondHalf]) {
+      var columnDiv = document.createElement('div');
       columnDiv.setAttribute('class', 'tmc-calendar-column');
       for (var item of column) {
         var div = document.createElement('div');
         div.setAttribute('class', 'tmc-calendar-item');
         div.innerHTML =
           '<a href="' +
-          item.link +
+          (item.canonicalurl || item.link) +
           '" target="_blank">' +
           '<div class="tmc-calendar-item__date">' +
           getDateString(item) +
