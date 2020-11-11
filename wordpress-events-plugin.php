@@ -16,7 +16,7 @@ function trotzig_multi_calendar_js() {
     plugins_url('/js/trotzig-multi-calendar.js', __FILE__ ));
   wp_enqueue_style('trotzig-multi-calendar',
     plugins_url('/css/trotzig-multi-calendar.css',__FILE__ ));
-  wp_enqueue_script('date-fns', 'http://cdn.date-fns.org/v1.9.0/date_fns.min.js');
+  wp_enqueue_script('date-fns', 'https://cdn.date-fns.org/v1.9.0/date_fns.min.js');
 }
 
 function trotzig_multi_calendar_plugin($atts) {
