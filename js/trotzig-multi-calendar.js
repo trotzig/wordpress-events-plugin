@@ -17,7 +17,7 @@ window.addEventListener('load', function () {
 
   function normalizeTime(timeString) {
     if (timeString.length === 8) {
-      return timeString.slice(0, 5)
+      return timeString.slice(0, 5);
     }
     return timeString;
   }
@@ -121,7 +121,9 @@ window.addEventListener('load', function () {
 
       // Filter out ones that are in the past
       allItems = allItems.filter(function (item) {
-        return item.startdate > new Date();
+        return (
+          item.startdate > new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+        );
       });
 
       // Sort items, upcoming first
