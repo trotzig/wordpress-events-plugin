@@ -88,7 +88,6 @@ window.addEventListener('load', function () {
     var base = document.head
       .querySelector('link[rel="https://api.w.org/"]')
       .getAttribute('href');
-    var allItems = [];
     Promise.all(
       urls.map(function (url) {
         return fetch(
@@ -102,11 +101,12 @@ window.addEventListener('load', function () {
             }
             return res.json();
           })
-          .then(function (json) {
-            allItems = allItems.concat(json);
-          });
       }),
-    ).then(function () {
+    ).then(function (jsons) {
+      var allItems = [];
+      jsons.forEach(function (json) {
+        allItems = allItems.concat(json);
+      });
       // Normalize dates
       allItems.forEach(function (item) {
         item.startdate = normalizeDate(item.startdate);
@@ -126,6 +126,17 @@ window.addEventListener('load', function () {
         );
       });
 
+      // filter out duplicates
+      var seenKeys = [];
+      allItems = allItems.filter(function (item) {
+        var key = itemKey(item);
+        if (seenKeys.indexOf(key) !== -1) {
+          return false;
+        }
+        seenKeys.push(key);
+        return true;
+      });
+
       // Sort items, upcoming first
       allItems.sort(function (a, b) {
         var aStart = new Date(a.startdate);
@@ -137,17 +148,6 @@ window.addEventListener('load', function () {
           return -1;
         }
         return 0;
-      });
-
-      // filter out duplicates
-      var seenKeys = [];
-      allItems = allItems.filter(function (item) {
-        var key = itemKey(item);
-        if (seenKeys.indexOf(key) !== -1) {
-          return false;
-        }
-        seenKeys.push(key);
-        return true;
       });
 
       // Reduce the size if necessary
